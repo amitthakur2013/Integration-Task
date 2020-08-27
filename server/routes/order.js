@@ -1,5 +1,5 @@
 const express = require("express");
-
+const moment = require("moment");
 // * NPM Packages
 const shortid = require("shortid");
 const randomize = require("randomatic");
@@ -169,7 +169,7 @@ router.post("/new", async (req, res) => {
       // customer: req.user._id,
       customer: req.body.userid,
       status: "active",
-      purchasedOn: new Date(),
+      purchasedOn: moment(new Date()).format('LLLL'),
       price: req.body.price,
       promocode: req.body.promocodeApplied, // <-- This is an optional field
       discountedPrice: req.body.discountedPrice,
