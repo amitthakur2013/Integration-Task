@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const upload = require("../config/multerConfig");
+const path=require('path');
 //! in create new merchant -- validate merchant not working with
 // * NPM Packages
 const passport = require("passport");
@@ -76,6 +78,7 @@ router.get("/view/:id", async (req, res) => {
 // * Done
 router.post("/new", async (req, res) => {
   try {
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     console.log(req.body);
     const { error } = validateMerchant(req.body);
     if (error) return res.send(error.details[0].message);
@@ -96,7 +99,7 @@ router.post("/new", async (req, res) => {
     var newMerchant = {
       ...reqBody,
       phoneNo: Number(req.body.phoneNo),
-      altNumber: Number(req.body.altNumber),
+      altMobile: Number(req.body.altNumber),
       password: password,
       createdOn: moment().format("D/M/YYYY, h:m A"),
       createdOrg: new Date(),

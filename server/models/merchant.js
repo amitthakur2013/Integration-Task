@@ -96,7 +96,7 @@ function validateMerchant(merchant) {
       .keys({
         firstName: Joi.string().max(150).required(),
         lastName: Joi.string().max(150).required(),
-        altMobile: Joi.string().min(10).max(10),
+        altNumber: Joi.string().min(10).max(10),
         landline: Joi.string(),
         communicationEmail: Joi.string().email().required(),
         about: Joi.string(),

@@ -1,7 +1,8 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import axios from 'axios';
 
-export const InviteManage = (props) => {
-  const renderItems = () => {
+export const InviteManage = () => {
+  /*const renderItems = () => {
     let count = 0;
     return props.items.map((item) => {
       count++;
@@ -23,7 +24,14 @@ export const InviteManage = (props) => {
         </tr>
       );
     });
-  };
+  };*/
+  const [user,setUser]=useState([]);
+  useEffect( ()=>{
+    (async function(){
+    const {data}=await axios.get('http://localhost:3124/api/invitecode/all')
+    setUser(data)
+  })()
+  });
   return (
     <div className='item-manage table-parent'>
       {" "}
@@ -38,6 +46,7 @@ export const InviteManage = (props) => {
           <th>Status</th>
           <th>Actions</th>
         </tr>
+
         <tr>
           <td></td>
           <td>
@@ -47,8 +56,21 @@ export const InviteManage = (props) => {
             <input type='text' name='' id='' />
           </td>
         </tr>
-
-        {renderItems()}
+        {user.map((usr,ind)=>
+          <tr>
+            <td></td>
+            <td>
+              {usr.code}
+            </td>
+            <td>
+              {usr.from.phoneNo}
+            </td>
+            <td>
+              <span className='active'>{usr.status}</span>
+            </td>
+          </tr>
+        )}
+        
       </table>
     </div>
   );

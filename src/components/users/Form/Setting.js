@@ -11,14 +11,19 @@ const Setting = ({
   formData,
 }) => {
   const submitForm = () => {
+    console.log("*************************************************")
     console.log(formData);
+
     try {
+      const fd=new FormData();
+      Object.keys(formData).forEach(function(key) {
+        fd.append(key,formData[key]);
+      });
+      
+      //fd.append("images",formData[images]);
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
       axios
-        .post("http://localhost:3124/api/merchant/new", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
+        .post("http://localhost:3124/api/merchant/new",fd,config)
         .then((res) => {
           console.log(res.data);
         });

@@ -8,6 +8,10 @@ const inviteCodeSchema = new mongoose.Schema({
     name: String,
     phoneNo: Number,
   },
+  status:{
+  	type:String,
+  	enum:["active","inactive"]
+  }
 });
 
 const InviteCode = mongoose.model("InviteCode", inviteCodeSchema);

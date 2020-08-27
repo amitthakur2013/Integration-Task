@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import Swal from "sweetalert2";
+import path from 'path';
 
 const BusinessInfo = ({
   step,

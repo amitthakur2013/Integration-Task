@@ -18,6 +18,7 @@ const deals = require("./routes/deals");
 const order = require("./routes/order");
 const enquiry = require("./routes/enquiry");
 const promocode = require("./routes/promocode");
+const invitecode=require("./routes/invitecode");
 
 // * Passport Config
 // Customer
@@ -66,6 +67,7 @@ app.use("/api/admin", admin);
 app.use("/api/location", location);
 app.use("/api/category", category);
 app.use("/api/enquiry", enquiry);
+app.use("/api/invitecode",invitecode);
 // app.use("/api/subcategory", subcategory);
 app.use("/api/deal", deals);
 app.use("/api/orders", order);

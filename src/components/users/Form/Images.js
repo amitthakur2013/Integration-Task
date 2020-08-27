@@ -3,6 +3,12 @@ import Swal from "sweetalert2";
 
 const Images = ({ step, stepDecrement, stepIncrement, images, setImages }) => {
   const onChange = (e) => {
+    /*var a=[...e.target.files]
+    var b=[]
+    a.map((file)=>{
+      b.push(file.name);
+    })
+    setImages(b);*/
     setImages(e.target.files);
   };
 

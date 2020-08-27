@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
+const moment = require("moment");
 // * NPM Packages
 const bcrypt = require("bcryptjs");
 const _ = require("lodash");
@@ -27,6 +27,7 @@ router.post("/new", async (req, res) => {
 
     const enquiry = await Enquiry.create({
       ...reqBody,
+      createdOn:moment(new Date()).format('LLLL'),
       phoneNo: Number(req.body.phoneNo),
     });
 

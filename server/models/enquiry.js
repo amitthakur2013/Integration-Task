@@ -13,6 +13,7 @@ const enquirySchema = new mongoose.Schema({
   },
   businessName: String,
   moreInfo: String,
+  createdOn:String,
 });
 
 function validateEnquiry(enquiry) {

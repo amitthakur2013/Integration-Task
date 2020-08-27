@@ -1,6 +1,16 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
+import axios from 'axios';
 
 export const Enquiry = () => {
+  const [user,setUser]=useState([]);
+  //const [flag,setFlag]=useState(true);
+  useEffect( ()=>{
+    (async function(){
+    const {data}=await axios.get('http://localhost:3124/api/enquiry/all')
+    setUser(data)
+  })()
+  },[]);
+
   return (
     <div className='item-manage'>
       <h2 className='item-heading'>Enquiry </h2>
@@ -36,19 +46,21 @@ export const Enquiry = () => {
           <td></td>
           <td></td>
         </tr>
+        {user.map((usr,ind)=>
         <tr>
-          <td>1</td>
-          <td>prashant mehta</td>
-          <td>123457996</td>
-          <td>prm7earth@gmail.com</td>
-          <td>all4you india </td>
-          <td>enquiry to get listed as restaurant chain owner</td>
+          <td>{ind+1}</td>
+          <td>{usr.name}</td>
+          <td>{usr.phoneNo}</td>
+          <td>{usr.email}</td>
+          <td>{usr.businessName}</td>
+          <td>{usr.moreInfo}</td>
 
           <td>
             {" "}
-            <span className=''>26 Jul 2020 11:14 am</span>
+            <span className=''>{usr.createdOn}</span>
           </td>
         </tr>
+        )}
       </table>
     </div>
   );
