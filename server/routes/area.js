@@ -9,6 +9,18 @@ router.get("/all", async (req, res) => {
   //TODO add CHECK maybe?
 });
 
+router.get('/:city_name', (req, res)=> {
+  City.findOne({cityName:req.params.city_name})
+  .then((city)=>{
+    Area.find({parentCity:city._id}).populate("parentCity").exec()
+    .then((area)=>{
+      res.json(area);
+    })
+    .catch(err => res.status(400).send("Something went Wrong here city!!"))
+  })
+  .catch(err => res.status(400).send("Something went Wrong!!"))
+})
+
 router.post("/add", (req, res) => {
   const { error } = validateArea(req.body);
   if (error) return res.status(400).send(error.details[0].message);

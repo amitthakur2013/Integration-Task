@@ -9,6 +9,18 @@ router.get("/all", async (req, res) => {
   //TODO add CHECK maybe?
 });
 
+router.get('/:state_name', (req, res)=> {
+  State.findOne({stateName:req.params.state_name})
+  .then((state)=>{
+    City.find({parentState:state._id}).populate("parentState").exec()
+    .then((city)=>{
+      res.json(city);
+    })
+    .catch(err => res.status(400).send("Something went Wrong here city!!"))
+  })
+  .catch(err => res.status(400).send("Something went Wrong!!"))
+})
+
 router.post("/add", (req, res) => {
   const { error } = validateCity(req.body);
   if (error) return res.status(400).send(error.details[0].message);
