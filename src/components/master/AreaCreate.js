@@ -1,6 +1,31 @@
-import React from "react";
+import React,{useState} from "react";
+import axios from 'axios';
 
 export const AreaCreate = () => {
+
+  const [areaName,setAreaName]=useState("");
+  const [cityName,setCityName]=useState("");
+  const [status,setStatus]=useState("active");
+
+  const submitHandler=async (e)=>{
+    e.preventDefault();
+    const res = await axios.post("http://localhost:3124/api/area/add", {
+      areaName,
+      cityName,
+      status
+    });
+    if (res.data._id){
+      alert("Successfull!");
+    }
+    else{
+      alert(res.data);
+    }
+    setAreaName("");
+    setCityName("");
+    setStatus("active");
+    console.log(res);
+  }
+
   return (
     <div>
       <div className='item-create'>
@@ -8,11 +33,11 @@ export const AreaCreate = () => {
         <form action=''>
           <div className='form-element'>
             <label htmlFor=''>Area</label>
-            <input type='text' />
+            <input type='text' onChange={(e)=>setAreaName(e.target.value)} value={areaName}/>
           </div>
           <div className='form-element'>
             <label htmlFor=''>City</label>
-            <input type='text' />
+            <input type='text' onChange={(e)=>setCityName(e.target.value)} value={cityName}/>
           </div>
           <div className='form-element'>
             <label htmlFor=''>Notes</label>
@@ -20,12 +45,13 @@ export const AreaCreate = () => {
           </div>
           <div className='form-element'>
             <label htmlFor=''>Status</label>
-            <select name='' id=''>
-              <option value=''>In active</option>
+            <select name='' id='' onChange={(e)=>setStatus(e.target.value)} value={status}>
+              <option>active</option>
+              <option>inactive</option>
             </select>
           </div>
           <div className='center'>
-            <button className='Next'>Create</button>
+            <button onClick={(e) => submitHandler(e)} className='Next'>Create</button>
             <button className='Back'>Cancel</button>
           </div>
         </form>

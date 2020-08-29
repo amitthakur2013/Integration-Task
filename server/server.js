@@ -19,6 +19,9 @@ const order = require("./routes/order");
 const enquiry = require("./routes/enquiry");
 const promocode = require("./routes/promocode");
 const invitecode=require("./routes/invitecode");
+const area=require("./routes/area");
+const city=require("./routes/city");
+const state=require("./routes/state");
 
 // * Passport Config
 // Customer
@@ -72,6 +75,9 @@ app.use("/api/invitecode",invitecode);
 app.use("/api/deal", deals);
 app.use("/api/orders", order);
 app.use("/api/promocode", promocode);
+app.use("/api/state",state);
+app.use("/api/city",city);
+app.use("/api/area",area);
 
 const port = process.env.PORT || 3124;
 app.listen(port, console.log(`Listening on port ${port}...`));
