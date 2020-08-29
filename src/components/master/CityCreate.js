@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import axios from 'axios';
 
 export const CityCreate = () => {
@@ -6,9 +6,18 @@ export const CityCreate = () => {
   const [stateName,setStateName]=useState("");
   const [cityName,setCityName]=useState("");
   const [status,setStatus]=useState("active");
+  const [states,setStates]=useState([])
+
+  useEffect(()=>{
+    (async function(){
+    const {data}=await axios.get('http://localhost:3124/api/state/all')
+    setStates(data)
+     })()
+  },[])
 
   const submitHandler=async (e)=>{
     e.preventDefault();
+    if(stateName === "Select") return alert("Pls Select State");
     const res = await axios.post("http://localhost:3124/api/city/add", {
       stateName,
       cityName,
@@ -33,11 +42,16 @@ export const CityCreate = () => {
         <form action=''>
           <div className='form-element'>
             <label htmlFor=''>City</label>
-            <input type='text' onChange={(e)=>setCityName(e.target.value)} value={cityName}/>
+            <input type='text' onChange={(e)=>setCityName(e.target.value)} value={cityName} required/>
           </div>
           <div className='form-element'>
-            <label htmlFor=''>State</label>
-            <input type='text' onChange={(e)=>setStateName(e.target.value)} value={stateName}/>
+            <label htmlFor=''>States</label>
+             <select name='' id='' onChange={(e)=>setStateName(e.target.value)} value={stateName}>
+             <option>Select</option>
+             {states.map(st=>
+              <option>{st.stateName}</option>
+            )}
+            </select>
           </div>
           <div className='form-element'>
             <label htmlFor=''>Notes</label>

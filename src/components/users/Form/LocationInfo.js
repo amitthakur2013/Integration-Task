@@ -1,5 +1,6 @@
-import React, { Fragment } from "react";
+import React, { Fragment,useEffect,useState } from "react";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const LocationInfo = ({
   step,
@@ -14,6 +15,39 @@ const LocationInfo = ({
       [e.target.name]: e.target.value,
     });
   };
+//var cities=[];
+function displayCity(e){
+  if (e.target.value === "Select") return alert("pls select satate!");
+  e.preventDefault();
+    axios.get(`http://localhost:3124/api/city/${e.target.value}`)
+    .then(async ({data})=>{
+    if(!data[0]) return alert("No city available for selected state!!");
+    await setLocationState({
+      ...locationState,
+      state:data[0].parentState.stateName,
+      cities:data,
+      city:""
+    })  
+  })
+  .catch(err=>alert(err)); 
+  
+}
+
+function displayArea(e){
+  if (e.target.value === "Select") return alert("pls select city!");
+  e.preventDefault();
+    axios.get(`http://localhost:3124/api/area/${e.target.value}`)
+    .then(async ({data})=>{
+    if(!data[0]) return alert("No area available for selected city!!");
+    await setLocationState({
+      ...locationState,
+      city:data[0].parentCity.cityName,
+      areas:data
+    }) 
+  })
+  .catch(err=>alert(err)); 
+  
+}
 
   const validator = () => {
     var {
@@ -97,13 +131,14 @@ const LocationInfo = ({
         <select
           class='form-control'
           name='state'
-          onChange={onChange}
+          onChange={(e)=>displayCity(e)}
           value={locationState.state}
           required
         >
           <option>Select</option>
-          <option>State 1</option>
-          <option>State 2</option>
+          {locationState.states.map(st =>
+          <option>{st.stateName}</option>
+          )}
         </select>
       </div>
 
@@ -112,13 +147,14 @@ const LocationInfo = ({
         <select
           class='form-control'
           name='city'
-          onChange={onChange}
+          onChange={(e)=>displayArea(e)}
           value={locationState.city}
           required
         >
           <option>Select</option>
-          <option>City 1</option>
-          <option>City 2</option>
+          {locationState.cities.map(ct =>
+          <option>{ct.cityName}</option>
+          )}
         </select>
       </div>
 
@@ -132,8 +168,9 @@ const LocationInfo = ({
           required
         >
           <option>Select</option>
-          <option>Area 1</option>
-          <option>Area 2</option>
+          {locationState.areas.map(ct =>
+          <option>{ct.areaName}</option>
+          )}
         </select>
       </div>
 

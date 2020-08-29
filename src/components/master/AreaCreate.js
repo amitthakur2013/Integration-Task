@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 import axios from 'axios';
 
 export const AreaCreate = () => {
@@ -6,9 +6,18 @@ export const AreaCreate = () => {
   const [areaName,setAreaName]=useState("");
   const [cityName,setCityName]=useState("");
   const [status,setStatus]=useState("active");
+  const [cities,setCities]=useState([])
+
+  useEffect(()=>{
+    (async function(){
+    const {data}=await axios.get('http://localhost:3124/api/city/all')
+    setCities(data)
+     })()
+  },[])
 
   const submitHandler=async (e)=>{
     e.preventDefault();
+    if (cityName === "Select") return alert("pls select city!");
     const res = await axios.post("http://localhost:3124/api/area/add", {
       areaName,
       cityName,
@@ -37,7 +46,12 @@ export const AreaCreate = () => {
           </div>
           <div className='form-element'>
             <label htmlFor=''>City</label>
-            <input type='text' onChange={(e)=>setCityName(e.target.value)} value={cityName}/>
+             <select name='' id='' onChange={(e)=>setCityName(e.target.value)} value={cityName}>
+             <option>Select</option>
+             {cities.map(ct=>
+              <option>{ct.cityName}</option>
+            )}
+            </select>
           </div>
           <div className='form-element'>
             <label htmlFor=''>Notes</label>

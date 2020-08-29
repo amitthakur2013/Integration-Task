@@ -6,6 +6,7 @@ import ContactInfo from "./ContactInfo";
 import Images from "./Images";
 import Setting from "./Setting";
 import LocationInfo from "./LocationInfo";
+import axios from "axios";
 
 const CreateMerchant = () => {
   const [step, setStep] = useState(1);
@@ -34,14 +35,27 @@ const CreateMerchant = () => {
   });
 
   const [locationState, setLocationState] = useState({
-    state: "Select",
-    city: "Select",
-    area: "Select",
+    state: "",
+    states:[],
+    city: "",
+    cities:[],
+    area: "",
+    areas:[],
     addrLine1: "",
     addrLine2: "",
     landmark: "",
     zipcode: "",
   });
+
+  useEffect(()=>{
+    (async function(){
+    const {data}=await axios.get('http://localhost:3124/api/state/all')
+    setLocationState({
+      ...locationState,
+      states:data
+    })
+     })()
+  },[])
 
   const [images, setImages] = useState([]);
 
