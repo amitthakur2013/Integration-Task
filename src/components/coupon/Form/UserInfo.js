@@ -95,10 +95,10 @@ class UserInfo extends React.Component {
             <option disabled selected value=''>
               Select an option
             </option>
-            <option value='KFC'>KFC</option>
-            <option value='MCD'>MCD</option>
-            <option value='Dominos'>Dominos</option>
-            <option value='Taj Mahal Palace'>Taj Mahal Palace</option>
+            {this.props.formData.merchantOptions.map(mer =>
+            <option key={mer._id}>{mer.businessName}</option>
+            )}
+            
           </select>
         </div>
         <div className='form-element'>
@@ -118,6 +118,8 @@ class UserInfo extends React.Component {
             <option value='Food'>Food</option>
             <option value='Drink'>Drink</option>
             <option value='hotel'>Hotel</option>
+            <option value='activity'>Activity</option>
+            <option value='movie'>Movie</option>
           </select>
         </div>
         {this.renderExtra()}

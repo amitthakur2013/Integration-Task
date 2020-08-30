@@ -1,5 +1,5 @@
 import React from "react";
-
+import axios from "axios";
 import UserInfo from "./UserInfo";
 import Info from "./Info";
 import { Templates } from "./Templates";
@@ -9,8 +9,32 @@ class Form extends React.Component {
   state = {
     step: 1,
 
+    //movie
+    movieName:"",
+    description:"",
+    row:"",
+    col:"",
+    img:"",
+    merchant:"",
+    price:"",
+    commision:0,
+    discountPercent:0,
+    prefernceOrder:0,
+    category:"",
+    valid:{
+      from:"",
+      to:""
+    },
+    display:{
+      from:"",
+      to:""
+    },
+    location:"",
+    movieAvailability:[],
+
     //step 1
     merchantUser: "",
+    merchantOptions:[],
     category: "",
     outlets: [],
     noOfRooms: "",
@@ -29,6 +53,15 @@ class Form extends React.Component {
     validTo: "",
     validDayAndTimes: [],
   };
+
+  componentDidMount(){
+    axios.get("http://localhost:3124/api/merchant/all")
+    .then(({data}) => {
+      this.setState({merchantOptions:data});
+      //console.log(this.state.merchantOptions);
+    })
+    .catch(err => console.log(err))
+  }
 
   nextStep = () => {
     const { step } = this.state;
