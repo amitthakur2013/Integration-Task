@@ -22,6 +22,11 @@ const invitecode=require("./routes/invitecode");
 const area=require("./routes/area");
 const city=require("./routes/city");
 const state=require("./routes/state");
+const menuTemplate=require("./routes/menuTemplate");
+const howtouse=require("./routes/howtouse");
+const cancellationpolicy=require("./routes/cancellationpolicy");
+const thingstoremember=require("./routes/thingstoremember");
+const refundpolicy=require("./routes/refundpolicy");
 
 // * Passport Config
 // Customer
@@ -78,6 +83,11 @@ app.use("/api/promocode", promocode);
 app.use("/api/state",state);
 app.use("/api/city",city);
 app.use("/api/area",area);
+app.use("/api/menuTemplate",menuTemplate);
+app.use("/api/howtouse",howtouse);
+app.use("/api/cancellationpolicy",cancellationpolicy);
+app.use("/api/thingstoremember",thingstoremember);
+app.use("/api/refundpolicy",refundpolicy);
 
 const port = process.env.PORT || 3124;
 app.listen(port, console.log(`Listening on port ${port}...`));
