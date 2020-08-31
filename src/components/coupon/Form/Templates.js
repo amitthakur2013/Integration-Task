@@ -15,27 +15,37 @@ export const Templates = (props) => {
         <label htmlFor=''>Menu</label>
         <select name='' id=''>
           <option value='' disabled selected></option>
-          <option value=''>Sankalp</option>
+          {props.formData.menuTemplate.map((m)=>
+          <option value=''>{m.title}</option>
+          )}
         </select>
       </div>
       <div className='form-element'>
         <label htmlFor=''>How to Use offer</label>
         <select name='' id=''>
           <option value='' disabled selected></option>
-          <option value=''>Sankalp</option>
+          {props.formData.howtouseTemplate.map((m)=>
+          <option value=''>{m.title}</option>
+          )}
         </select>
       </div>
       <div className='form-element'>
         <label htmlFor=''>Cancellation Policy</label>
         <select name='' id=''>
           <option value='' disabled selected></option>
-          <option value=''>100% refund</option>
-          <option value=''>No refund</option>
+          {props.formData.cancellationTemplate.map((m)=>
+          <option value=''>{m.title}</option>
+          )}
         </select>
       </div>
       <div className='form-element'>
         <label htmlFor=''>Things To Remember</label>
-        <select name='' id=''></select>
+        <select name='' id=''>
+        <option value='' disabled selected></option>
+        {props.formData.thingstorememberTemplate.map((m)=>
+          <option value=''>{m.title}</option>
+          )}
+        </select>
       </div>
       <div className='center'>
         <button className='Back' onClick={back}>

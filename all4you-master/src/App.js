@@ -21,7 +21,7 @@ function App() {
           path="/"
           render={(props) => (
             <>
-              {/* <Header {...props} /> */}
+              { <Header {...props} /> }
               <Switch>
                 <Route
                   exact
@@ -44,7 +44,7 @@ function App() {
                   {...props}
                 />
               </Switch>
-              {/* <Footer /> */}
+              { <Footer /> }
             </>
           )}
         />

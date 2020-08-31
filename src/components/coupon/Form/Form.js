@@ -52,6 +52,10 @@ class Form extends React.Component {
     validFrom: "",
     validTo: "",
     validDayAndTimes: [],
+    menuTemplate:[],
+    howtouseTemplate:[],
+    cancellationTemplate:[],
+    thingstorememberTemplate:[]
   };
 
   componentDidMount(){
@@ -61,6 +65,35 @@ class Form extends React.Component {
       //console.log(this.state.merchantOptions);
     })
     .catch(err => console.log(err))
+
+    axios.get("http://localhost:3124/api/menuTemplate/all")
+    .then(({data}) => {
+      this.setState({menuTemplate:data});
+      //console.log(this.state.merchantOptions);
+    })
+    .catch(err => console.log(err))
+
+    axios.get("http://localhost:3124/api/howtouse/all")
+    .then(({data}) => {
+      this.setState({howtouseTemplate:data});
+      //console.log(this.state.merchantOptions);
+    })
+    .catch(err => console.log(err))
+
+    axios.get("http://localhost:3124/api/cancellationpolicy/all")
+    .then(({data}) => {
+      this.setState({cancellationTemplate:data});
+      //console.log(this.state.merchantOptions);
+    })
+    .catch(err => console.log(err))
+
+    axios.get("http://localhost:3124/api/thingstoremember/all")
+    .then(({data}) => {
+      this.setState({thingstorememberTemplate:data});
+      //console.log(this.state.merchantOptions);
+    })
+    .catch(err => console.log(err))
+
   }
 
   nextStep = () => {
