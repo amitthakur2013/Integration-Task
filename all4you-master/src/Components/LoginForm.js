@@ -2,18 +2,21 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import axios from "axios";
 const LoginForm = () => {
-  const [username, setUsername] = useState("asdf@gmail.com");
-  const [password, setPassword] = useState("asdf12345");
-  const login = async (e) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const login = (e) => {
     e.preventDefault();
-    console.log("aaaa");
-    const res = await axios.post("http://localhost:3124/api/customer/login", {
+     axios.post("http://localhost:3124/api/customer/login", {
       username,
       password,
-    });
-    console.log(res);
-    const a = await axios.get(`http://localhost:3124/api/customer/my-account`);
-    console.log("bbbb", a);
+    })
+     .then((res)=> {
+       localStorage.setItem("user",JSON.stringify(res));
+       window.location.reload(false);
+     })
+   //window.location.reload(false);
+    /*const a = await axios.get(`http://localhost:3124/api/customer/my-account`);
+    console.log("bbbb", a);*/
   };
   return (
     <Form onSubmit={login}>
@@ -24,7 +27,7 @@ const LoginForm = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           type="text"
-          placeholder="Enter email"
+          placeholder="Enter email or phone"
         />
         <Form.Text className="text-muted">
           We'll never share your email with anyone else.

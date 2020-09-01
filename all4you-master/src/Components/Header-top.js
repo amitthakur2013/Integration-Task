@@ -2,8 +2,14 @@ import React from "react";
 import LoginModal from "./LoginModal";
 import UserHeaderMenu from "./UserHeaderMenu";
 import HowItWorksModal from "./HowItWorksModal";
+import axios from 'axios';
 
 const HeaderTop = ({ setShowChangeLocation, location }) => {
+  const logOut=async(e) => {
+    await axios.get("http://localhost:3124/api/customer/logout");
+    await localStorage.removeItem('user');
+    window.location.reload(false);
+  }
   return (
     <div className="top-part">
       <div className="container">
@@ -42,18 +48,23 @@ const HeaderTop = ({ setShowChangeLocation, location }) => {
           </li>
           <li>
             <a href="#" className="">
-              Connceted with us
+              Connect with us
             </a>
           </li>
 
           <li>
             {/* <a className="" href="#"> */}
-            {/* <LoginModal /> */}
+            {localStorage.getItem('user') ? <UserHeaderMenu />  : <LoginModal />}
+            {/*<LoginModal /> */}
             {/* </a> */}
 
-            <UserHeaderMenu />
+            {/*<UserHeaderMenu />*/}
             {/* signup */}
           </li>
+          {localStorage.getItem('user') &&
+          <li>
+          <button style={{border:"none",background:"inherit",color:"white"}} onClick={(e)=>logOut(e)} >LogOut</button>
+          </li>}
         </ul>
       </div>
     </div>

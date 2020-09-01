@@ -13,7 +13,7 @@ function LoginModal() {
   return (
     <>
       {/* <a variant="primary" > */}
-      <span onClick={handleShow}>Login/Signup</span>
+      <span onClick={handleShow} style={{color:"white"}}>Login/Signup</span>
       {/* </a> */}
       <Modal show={show} onHide={handleClose}>
         {/* <Modal.Header closeButton>

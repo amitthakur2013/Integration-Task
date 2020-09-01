@@ -9,6 +9,9 @@ const SignupForm = () => {
   const [phoneNumber, setPhoneNumber] = useState("1234567891");
   const [password, setPassword] = useState("");
   const [inviteCode, setInviteCode] = useState("");
+  const [otp,setOtp] = useState("");
+  const [confirmPassword,setConfirmPassword] = useState("");
+
   const signup = async (e) => {
     e.preventDefault();
     const res = await axios.post("http://localhost:3124/api/customer/signup", {
@@ -17,15 +20,49 @@ const SignupForm = () => {
       email,
       phoneNo: phoneNumber,
       password,
-      confirmPassword: password,
-      inviteCode,
-      gender,
+      confirmPassword,
       DOB,
+      otp
+
     });
+    if(res){
+      alert(res.data)
+    }
     console.log(res);
   };
+
+  const sendOTP=(e) => {
+    e.preventDefault();
+    axios.post("http://localhost:3124/api/customer/sendOTP",{
+      phoneNo:phoneNumber
+    }).then(({data})=>alert(data))
+    .catch(err=>alert("Something went Wrong!"))
+  }
+
   return (
     <Form onSubmit={signup}>
+      <Form.Group controlId="formBasicEmail">
+        <Form.Label>Mobile</Form.Label>
+        <Form.Control
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+          type="number"
+          placeholder="Phone number"
+        />
+      </Form.Group>
+  
+      <Button onClick={(e)=>sendOTP(e)} variant="primary" type="submit">
+        Send OTP
+      </Button>
+      <Form.Group controlId="formBasicEmail">
+        <Form.Label>OTP</Form.Label>
+        <Form.Control
+          value={otp}
+          onChange={(e) => setOtp(e.target.value)}
+          placeholder="Enter OTP"
+        />
+      </Form.Group>
+      {(otp.length === 6) &&<>
       <Form.Group controlId="formBasicEmail">
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Name</Form.Label>
@@ -56,15 +93,7 @@ const SignupForm = () => {
           placeholder="Enter email"
         />
       </Form.Group>
-      <Form.Group controlId="formBasicEmail">
-        <Form.Label>Mobile</Form.Label>
-        <Form.Control
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          type="number"
-          placeholder="Phone number"
-        />
-      </Form.Group>
+      
 
       <Form.Group controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
@@ -76,6 +105,15 @@ const SignupForm = () => {
         />
       </Form.Group>
       <Form.Group controlId="formBasicPassword">
+        <Form.Label>Confirm Password</Form.Label>
+        <Form.Control
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          type="password"
+          placeholder="Confirm Password"
+        />
+      </Form.Group>
+      <Form.Group controlId="formBasicPassword">
         <Form.Label>Gender</Form.Label>
         <Form.Control
           value={gender}
@@ -84,7 +122,7 @@ const SignupForm = () => {
           placeholder="Gender"
         />
       </Form.Group>
-      <Form.Group controlId="formInvite">
+      {/*<Form.Group controlId="formInvite">
         <Form.Label>Invite Code</Form.Label>
         <Form.Control
           value={inviteCode}
@@ -92,11 +130,11 @@ const SignupForm = () => {
           type="text"
           placeholder="invite"
         />
-      </Form.Group>
+      </Form.Group>*/}
 
       <Button variant="primary" type="submit">
         signup
-      </Button>
+      </Button></>}
     </Form>
   );
 };
