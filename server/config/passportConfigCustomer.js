@@ -7,19 +7,18 @@ const { Customer } = require("../models/customer");
 module.exports = function (passport) {
   passport.use(
     "customer",
-    new LocalStrategy(async (loginDetails, password, done) => {
-      console.log(loginDetails);
+    new LocalStrategy(async (username, password, done) => {
 
       // Find a Customer
       let foundCustomer;
       // Check if loginDetails include "@"
-      if (loginDetails.includes("@")) {
+      if (username.includes("@")) {
         // True -> Find by email
-        foundCustomer = await Customer.findOne({ email: loginDetails }).exec();
+        foundCustomer = await Customer.findOne({ email: username }).exec();
       } else {
         // False -> Find by phoneNo
         foundCustomer = await Customer.findOne({
-          phoneNo: parseInt(loginDetails),
+          phoneNo: parseInt(username),
         }).exec();
       }
       if (!foundCustomer) {
@@ -27,10 +26,10 @@ module.exports = function (passport) {
         return done(null, false, { message: "Invalid Credentials" });
       }
 
-      if (foundCustomer.status.toLowerCase() === "inactive")
+      /*if (foundCustomer.status.toLowerCase() === "inactive")
         return done(null, false, {
           message: "Your access has been restricted. Contact Admin.",
-        });
+        });*/
 
       // Match Password
       bcrypt.compare(password, foundCustomer.password, (err, isMatch) => {

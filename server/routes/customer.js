@@ -106,10 +106,31 @@ router.post("/signup", async (req, res) => {
 
 // * Login Customer
 router.post("/login", (req, res, next) => {
-  passport.authenticate("customer", {
-    successRedirect: "/",
-    failureRedirect: "/api/login",
-  })(req, res, next);
+  console.log(req.body);
+  passport.authenticate("customer",(err, user, info) =>{
+      if(err) return res.status(400).send("Something went Wrong!");
+        if(!user){
+          res.status(401).send("No user Exist!");
+        } else {
+
+          req.logIn(user,err=>{
+            if(err) return res.send("Something went wrong!");
+            /*res.send("Successfully Authenticated!");
+            console.log("***********************")
+            console.log(req.user);*/
+            res.send(req.user);
+          })
+        }
+    })(req, res, next);
+});
+
+router.get("/user",(req, res) => {
+  res.send(req.user);
+})
+
+router.get('/logout', (req, res)=>{
+  req.logout();
+  return res.json("logged out success!!")
 });
 
 // * Get my profile

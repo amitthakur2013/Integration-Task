@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
-
+const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
 
@@ -28,6 +28,7 @@ const cancellationpolicy=require("./routes/cancellationpolicy");
 const thingstoremember=require("./routes/thingstoremember");
 const refundpolicy=require("./routes/refundpolicy");
 
+app.use(express.json());
 // * Passport Config
 // Customer
 require("./config/passportConfigCustomer")(passport);
@@ -55,7 +56,7 @@ mongoose
   .then(console.log("Connected to MongoDB online..."))
   .catch((err) => console.error("Could not connect to MongoDB..."));
 
-app.use(express.json());
+
 app.use(express.static("public"));
 app.use(cors());
 app.use(
@@ -65,6 +66,7 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.use(cookieParser("isse mat dekho please"));
 app.use(passport.initialize());
 app.use(passport.session());
 
