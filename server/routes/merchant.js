@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const upload = require("../config/multerConfig");
 const path=require('path');
+const {RecentActivity} = require('../models/recentActivities');
 //! in create new merchant -- validate merchant not working with
 // * NPM Packages
 const passport = require("passport");
@@ -78,8 +79,6 @@ router.get("/view/:id", async (req, res) => {
 // * Done
 router.post("/new", async (req, res) => {
   try {
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    console.log(req.body);
     const { error } = validateMerchant(req.body);
     if (error) return res.send(error.details[0].message);
 
@@ -107,7 +106,10 @@ router.post("/new", async (req, res) => {
     };
 
     const merchant = await Merchant.create(newMerchant);
-
+    await RecentActivity.create({
+      message:`New merchant ${merchant.businessName} created by admin`,
+      createdOn:new Date()
+    })
     res.status(200).send(merchant);
   } catch (error) {
     console.log(error);
@@ -277,7 +279,10 @@ router.put("/change-password", async (req, res) => {
     merchant.upadatedOn = moment().format("D/M/YYYY, h:m A");
 
     merchant = await merchant.save();
-
+    await RecentActivity.create({
+      message:`Merchant ${merchant.businessName} changed its password`,
+      createdOn:new Date()
+    })
     res.send(merchant);
   } catch (error) {
     console.log(error);
@@ -292,6 +297,21 @@ router.post("/login", (req, res, next) => {
     failureRedirect: "/login",
   })(req, res, next);
 });
+
+//delete a merchant
+router.delete('/delete/:id',async(req,res) => {
+  try {
+  const merchant=await Merchant.findByIdAndRemove(req.params.id)
+  await RecentActivity.create({
+      message:`Merchant ${merchant.businessName} deleted by admin`,
+      createdOn:new Date()
+    })
+  res.send(merchant);
+} catch(err) {
+  console.log(err);
+  res.send("Something went wrong!");
+}
+})
 
 // * Requests End -->
 

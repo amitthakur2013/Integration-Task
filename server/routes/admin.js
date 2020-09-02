@@ -1,6 +1,6 @@
 const express = require("express");
-const mongoose = require("mongoose");
-
+const mongoose = require("mongoose"); 
+const {RecentActivity}=require("../models/recentActivities");
 // * NPM packages
 const passport = require("passport");
 const bcrypt = require("bcryptjs");
@@ -75,7 +75,10 @@ router.post("/new", async (req, res) => {
     };
 
     const admin = await Admin.create(newAdmin);
-
+    await RecentActivity.create({
+      message:`New admin ${admin.name} created`,
+      createdOn:new Date()
+    })
     res.send(admin);
   } catch (error) {
     console.log(error);
@@ -196,7 +199,10 @@ router.put("/change-password", async (req, res) => {
     admin.updatedOn = moment().format("D/M/YYYY, h:m A");
 
     admin = await admin.save();
-
+    await RecentActivity.create({
+      message:`admin ${admin.name} has changed his password`,
+      createdOn:new Date()
+    })
     res.send(admin);
   } catch (error) {
     console.log(error);
@@ -239,10 +245,18 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
-router.delete('/delete/:id',(req,res)=> {
-  Admin.findByIdAndRemove(req.params.id)
-  .then((res)=>res.send(res))
-  .catch((err)=>res.send('Something went wrong!'))
+router.delete('/delete/:id',async (req,res)=> {
+  try{
+    const admin=await Admin.findByIdAndRemove(req.params.id)
+  await RecentActivity.create({
+      message:`Admin ${admin.name} deleted`,
+      createdOn:new Date()
+    })
+  res.send(admin);
+} catch(err){
+  console.log(err);
+  res.send("Something went wrong.");
+}  
 })
 
 // * Requests End -->

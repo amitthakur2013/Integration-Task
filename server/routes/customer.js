@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const {RecentActivity}=require("../models/recentActivities");
 
 // * NPM Packages
 const passport = require("passport");
@@ -96,7 +97,10 @@ router.post("/signup", async (req, res) => {
       createdOn: moment().format("D/M/YYYY, h:m A"),
       createdOrg: new Date(),
     });
-
+    await RecentActivity.create({
+      message:`New user ${customer.name} registered`,
+      createdOn:new Date()
+    })
     res.json({ customer, message: "New Customer created" });
   } catch (error) {
     console.log("Error occured here \n", error);
@@ -188,6 +192,10 @@ router.put("/changePassword", async (req, res) => {
     var newPassword = await bcrypt.hash(req.body.newPassword.trim(), salt);
     customer.password = newPassword;
     customer = await customer.save();
+    await RecentActivity.create({
+      message:`User ${customer.name} changed ${customer.gender === 'male'?"his":"her"} password`,
+      createdOn:new Date()
+    })
     res.json({ customer, message: "Password Updated." });
   } catch (error) {
     console.log("Error occured here \n", error);
