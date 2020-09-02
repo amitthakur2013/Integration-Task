@@ -71,7 +71,7 @@ router.post("/new", upload.single("icon"),async (req, res) => {
     //b=req.body.validTill.toString().split("-")
     var newPromocode = await Promocode.create({
       ...reqBody,
-      icon:path.join(__dirname,'../',req.file.path),
+      icon:/*path.join(__dirname,'../',req.file.path)*/req.file.filename,
       validFrom: new Date(req.body.validFrom.toString()),
       validTill: new Date(req.body.validTill.toString()),
     });

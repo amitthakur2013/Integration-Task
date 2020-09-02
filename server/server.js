@@ -27,6 +27,7 @@ const howtouse=require("./routes/howtouse");
 const cancellationpolicy=require("./routes/cancellationpolicy");
 const thingstoremember=require("./routes/thingstoremember");
 const refundpolicy=require("./routes/refundpolicy");
+const banner=require("./routes/banner");
 
 app.use(express.json());
 // * Passport Config
@@ -90,6 +91,7 @@ app.use("/api/howtouse",howtouse);
 app.use("/api/cancellationpolicy",cancellationpolicy);
 app.use("/api/thingstoremember",thingstoremember);
 app.use("/api/refundpolicy",refundpolicy);
+app.use("/api/banner",banner);
 
 const port = process.env.PORT || 3124;
 app.listen(port, console.log(`Listening on port ${port}...`));
