@@ -4,7 +4,7 @@ const moment = require("moment");
 const { Deal, validateDeal, validateactivityDeal, validatemovieDeal, validatehotelDeal } = require("../models/Deals");
 const Category=require("../models/category");
 const { Merchant } = require("../models/merchant");
-
+const { RecentActivity }= require("../models/recentActivities");
 // * Get all deals
 // * Done
 router.get("/all", async (req, res) => {
@@ -59,6 +59,10 @@ router.post("/new_movie",async (req, res, next) => {
     merchant.deals.push(deal._id);
     await merchant.save();
     await deal.save();
+    await RecentActivity.create({
+      message:`New Movie coupon created by admin under merchant ${merchant.businessName}`,
+      createdOn:new Date()
+    })
     res.json(deal);
 
   }
@@ -102,6 +106,10 @@ router.post("/new", (req, res, next) => {
     await merchant.save();
     await deal.save();
     //TODO apply fawn??
+    await RecentActivity.create({
+      message:`New Coupon created by admin under merchant ${merchant.businessName}`,
+      createdOn:new Date()
+    })
 
     res.json(deal);
 
